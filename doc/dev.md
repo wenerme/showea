@@ -1,5 +1,21 @@
 
 
+
+# Code
+
+## Framework
+* Storage - JPA+Spring+H2
+* Service - SpringMVC+Entity
+
+## Code Style
+
+* fluent
+* chain
+* [horstmann/Allman](https://en.wikipedia.org/wiki/Indent_style) like ident style
+
+
+# Data Format
+
 ## i518 记事本
 ```
 ^(?:标题|Caption):(?<title>[^\r\n]*)[\r\n]+
@@ -26,3 +42,4 @@ sms,submit,xx,	+12345,,2014. 2.28 10:10,23,"content"
 信息类型只见 sms
 submit 为发送
 deliver 为接收
+

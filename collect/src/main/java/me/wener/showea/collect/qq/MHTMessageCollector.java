@@ -1,35 +1,45 @@
 package me.wener.showea.collect.qq;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
-import java.nio.file.Path;
+import com.google.common.collect.Maps;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import jodd.jerry.Jerry;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import org.apache.commons.io.IOUtils;
+import org.apache.james.mime4j.dom.Entity;
+import org.apache.james.mime4j.dom.Message;
+import org.apache.james.mime4j.dom.Multipart;
+import org.apache.james.mime4j.dom.SingleBody;
+import org.apache.james.mime4j.dom.TextBody;
+import org.apache.james.mime4j.message.DefaultMessageBuilder;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 @Accessors(fluent = true, chain = true)
 public class MHTMessageCollector
 {
-
-
     @Getter
-    private final List<String> attachments = Lists.newArrayList();
+    private final Map<String, Attachment> attachments = Maps.newHashMap();
     @Getter
-    private String content;
+    private final List<ChatMessage> messages = Lists.newArrayList();
+    private final DefaultMessageBuilder builder;
+    @Getter
     @Setter
-    @Getter
-    private Path attachmentPath;
-    private Date date;
-    private List<ChatMessage> messages = Lists.newArrayList();
+    private String target, targetNumber, host, hostNumber;
+
+    public MHTMessageCollector() {builder = new DefaultMessageBuilder();}
 
     @SneakyThrows
-    public static List<ChatMessage> parseMessage(String content, String target, String targetNumber, String host, String hostNumber)
+    static List<ChatMessage> parseMessage(String content, String target, String targetNumber, String host, String hostNumber)
     {
         List<ChatMessage> items = Lists.newArrayList();
         Jerry $ = Jerry.jerry(content);
@@ -112,9 +122,43 @@ public class MHTMessageCollector
         return items;
     }
 
-    public void parse()
+    @SneakyThrows
+    static Attachment asAttachment(Entity entity)
     {
+        String name = entity.getFilename();
+        if (name == null)
+        {
+            name = entity.getHeader().getField("Content-Location").getBody();
+        }
+        return new Attachment().name(name)
+                               .type(entity.getMimeType())
+                               .content(IOUtils.toByteArray(((SingleBody) entity.getBody()).getInputStream()));
+    }
 
+    public void parse(InputStream is) throws IOException
+    {
+        Message message = builder.parseMessage(is);
+        Multipart multipart = (Multipart) message.getBody();
+        List<Entity> parts = multipart.getBodyParts();
+        String content = IOUtils.toString(((TextBody) parts.get(0).getBody()).getInputStream(), Charsets.UTF_8);
+        parseMessage(content);
+
+        for (int i = 1; i < parts.size(); i++)
+        {
+            Attachment attachment = asAttachment(parts.get(i));
+            attachments.put(attachment.name(), attachment);
+        }
+    }
+
+    public void parseMessage(String html)
+    {
+        messages.addAll(parseMessage(html, target, targetNumber, host, hostNumber));
+    }
+
+    public void clear()
+    {
+        attachments.clear();
+        messages.clear();
     }
 
 }
