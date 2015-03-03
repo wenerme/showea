@@ -1,0 +1,35 @@
+package me.wener.showea.collect.misc;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Map;
+import me.wener.showea.collect.util.Encoding;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
+import org.apache.commons.lang3.time.FastDateParser;
+import org.junit.Test;
+
+public class WDJSMSSCSVTest
+{
+    @Test
+    public void test() throws IOException
+    {
+        InputStream is = ClassLoader.getSystemResourceAsStream("misc/wdj-sms.csv");
+        String content = Encoding.toUTF8AndClose(is);
+        System.out.println(WDJSMSExportCSV.parse(content, "你你", null));
+    }
+
+    @Test
+    public void testDate() throws ParseException
+    {
+        String date = "2014. 2.22  7:57";
+        date = date.replaceFirst("(?<=\\.)\\s(?=\\S)", "").replaceFirst("(?<=\\S)\\s+(?=\\S)", " ");
+        System.out.println(date);
+        System.out.println(FastDateFormat.getInstance("yyyy.MM.dd HH:mm").parse(date));
+    }
+}

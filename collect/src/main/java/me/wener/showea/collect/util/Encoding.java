@@ -67,6 +67,7 @@ public class Encoding
         String encoding = detector.getDetectedCharset();
         detector.reset();
 
-        return encoding;
+        // FIXME 编码检测可能失败,即便是UTF8的也可能无法检测
+        return encoding == null ? "UTF8" : encoding;
     }
 }
