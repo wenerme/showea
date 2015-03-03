@@ -43,3 +43,20 @@ sms,submit,xx,	+12345,,2014. 2.28 10:10,23,"content"
 submit 为发送
 deliver 为接收
 
+## QQ 空间留言板
+```
+http://m.qzone.qq.com/cgi-bin/new/get_msgb?hostUin=514403150&num=10&start=60&hostword=0&essence=1&r=0.9264712121803313&iNotice=0&inCharset=utf-8&outCharset=utf-8&format=jsonp&ref=qzone&g_tk=1758898036
+http://m.qzone.qq.com/cgi-bin/new/get_msgb?
+uin=514403150&
+hostUin=514403150&
+num=10&start=60&
+hostword=0&
+essence=1&
+r=0.9264712121803313&
+iNotice=0&
+inCharset=utf-8&
+outCharset=utf-8&
+format=jsonp&
+ref=qzone&
+g_tk=1758898036
+```
