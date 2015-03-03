@@ -1,6 +1,5 @@
 package me.wener.showea.collect.i518;
 
-import com.apple.eawt.Application;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +13,8 @@ public class ModelTest implements CommandLineRunner
     @Autowired
     SMSRepository smsRepo;
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         SpringApplication.run(ModelTest.class);
     }
 
