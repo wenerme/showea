@@ -6,7 +6,7 @@ import java.sql.Statement;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import me.wener.showea.collect.util.ResultSets;
+import me.wener.showea.util.ResultSets;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.dialect.H2Dialect;
 import org.hibernate.tool.hbm2ddl.DatabaseMetadata;
@@ -129,7 +129,7 @@ public class ModelTest implements CommandLineRunner
     @Configuration
     public static class JPACfg
     {
-        //        @Bean
+        @Bean
         public DataSource dataSource()
         {
             EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();

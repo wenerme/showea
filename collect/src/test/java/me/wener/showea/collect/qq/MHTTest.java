@@ -4,6 +4,7 @@ import static java.lang.ClassLoader.getSystemResourceAsStream;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
+import java.awt.TrayIcon;
 import java.io.IOException;
 import java.util.List;
 import me.wener.showea.model.ChatMessage;
@@ -22,11 +23,11 @@ public class MHTTest
 {
     public static void main(String[] args)
     {
-        MessageTree.main(new String[]{"/Users/wener/gits/showea/collect/src/test/resources/qq/msg.mht"});
+        MessageTree.main(new String[]{ClassLoader.getSystemResource("qq/msg.mht").getFile()});
     }
 
     @Test
-    public void test() throws IOException
+    public void test() throws IOException, InterruptedException
     {
         DefaultMessageBuilder builder = new DefaultMessageBuilder();
 

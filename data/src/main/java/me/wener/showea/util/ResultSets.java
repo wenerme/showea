@@ -1,4 +1,4 @@
-package me.wener.showea.collect.util;
+package me.wener.showea.util;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
