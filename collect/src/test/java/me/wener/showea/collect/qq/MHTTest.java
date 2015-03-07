@@ -6,6 +6,7 @@ import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
 import java.io.IOException;
 import java.util.List;
+import me.wener.showea.model.ChatMessage;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.dom.Entity;
 import org.apache.james.mime4j.dom.Message;

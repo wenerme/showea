@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.SneakyThrows;
+import me.wener.showea.model.Note;
 
 public class NoteCollector
 {

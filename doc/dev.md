@@ -60,3 +60,6 @@ format=jsonp&
 ref=qzone&
 g_tk=1758898036
 ```
+
+## 数据格式化为 twitter-text
+https://github.com/twitter/twitter-text

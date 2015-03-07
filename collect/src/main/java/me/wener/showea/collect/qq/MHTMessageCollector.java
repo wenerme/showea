@@ -14,6 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import me.wener.showea.model.ChatMessage;
 import org.apache.commons.io.IOUtils;
 import org.apache.james.mime4j.dom.Entity;
 import org.apache.james.mime4j.dom.Message;

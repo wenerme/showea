@@ -8,8 +8,8 @@ showea -> 秀恩爱
 * BBK i518 导出记事本
 * 豌豆荚导出数据中的短信 sms.csv
 * QQ 消息导出的 MHT
+* QQ 空间消息(目前仅支持可匿名访问的空间)
 * Landscape
-	* QQ 空间消息
 	* QQ 相册
 	* QQ 离线消息
 	* QQ 日志采集

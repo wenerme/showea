@@ -1,28 +1,31 @@
-package me.wener.showea.collect.qq;
+package me.wener.showea.model;
 
-import com.google.common.collect.Lists;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+/**
+ * i518 上的记事本内容数据模型
+ */
 @Data
 @Accessors(chain = true, fluent = true)
 @Entity
-public class ZoneMessage
+@Table(name = "T_NOTE")
+public class Note implements Serializable
 {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String mid;
-    private String parent;
     private Date data;
+    @Column(length = 2000)
     private String content;
-    private Long uin;
-
-    private List<ZoneMessage> replays = Lists.newArrayList();
+    private String title;
+    private String weather;
 }

@@ -13,6 +13,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>me.wener.showea</groupId>
+            <artifactId>model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>1.4.185</version>
@@ -84,22 +90,25 @@
             <artifactId>jodd-lagarto</artifactId>
             <version>3.5.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-http</artifactId>
+            <version>3.5.2</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.apache.james</groupId>
-            <artifactId>apache-mime4j</artifactId>
+            <artifactId>apache-mime4j-dom</artifactId>
             <version>0.7.2</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.james</groupId>
-                    <artifactId>apache-mime4j-benchmark</artifactId>
-                </exclusion>
-                <!--<exclusion>-->
-                <!--<groupId>org.apache.james</groupId>-->
-                <!--<artifactId>apache-mime4j-examples</artifactId>-->
-                <!--</exclusion>-->
-            </exclusions>
+            <!--<groupId>org.apache.james</groupId>-->
+            <!--<artifactId>apache-mime4j-examples</artifactId>-->
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.apache.commons</groupId>-->
+        <!--<artifactId>commons-jexl</artifactId>-->
+        <!--<version>2.1.1</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>commons-codec</groupId>
@@ -110,7 +119,7 @@
         <dependency>
             <groupId>org.mapdb</groupId>
             <artifactId>mapdb</artifactId>
-            <version>1.0.6</version>
+            <version>1.0.7</version>
         </dependency>
 
         <dependency>
@@ -128,34 +137,34 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <!--<build>-->
+    <!--<plugins>-->
+    <!--<plugin>-->
+    <!--<groupId>org.springframework.boot</groupId>-->
+    <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+    <!--</plugin>-->
+    <!--</plugins>-->
+    <!--</build>-->
 
-    <repositories>
-        <repository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/libs-release</url>
-        </repository>
-        <repository>
-            <id>org.jboss.repository.releases</id>
-            <name>JBoss Maven Release Repository</name>
-            <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
-        </repository>
-    </repositories>
+    <!--<repositories>-->
+    <!--<repository>-->
+    <!--<id>spring-releases</id>-->
+    <!--<name>Spring Releases</name>-->
+    <!--<url>https://repo.spring.io/libs-release</url>-->
+    <!--</repository>-->
+    <!--<repository>-->
+    <!--<id>org.jboss.repository.releases</id>-->
+    <!--<name>JBoss Maven Release Repository</name>-->
+    <!--<url>https://repository.jboss.org/nexus/content/repositories/releases</url>-->
+    <!--</repository>-->
+    <!--</repositories>-->
 
-    <pluginRepositories>
-        <pluginRepository>
-            <id>spring-releases</id>
-            <name>Spring Releases</name>
-            <url>https://repo.spring.io/libs-release</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <!--<pluginRepositories>-->
+    <!--<pluginRepository>-->
+    <!--<id>spring-releases</id>-->
+    <!--<name>Spring Releases</name>-->
+    <!--<url>https://repo.spring.io/libs-release</url>-->
+    <!--</pluginRepository>-->
+    <!--</pluginRepositories>-->
 
 </project>

@@ -10,22 +10,21 @@ import java.util.regex.Pattern;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import me.wener.showea.model.SMS;
 
 @Getter
 @Accessors(fluent = true, chain = true)
 public class SMSCollector
 {
-    private String content;
-
-    private File file;
-
-    private final List<SMS> items = Lists.newArrayList();
     @SuppressWarnings("MalformedRegex")
     public static final Pattern REGEX = Pattern.compile("^\n" +
             "(?<type>收件人|发件人|To|From)[：:]\n" +
             "(?<target>[^\\r\\n]*)[\\r\\n]+\n" +
             "(?<date>[^\\s]+)\\s+(?<time>[^\\r\\n]*)[\\r\\n]", Pattern.COMMENTS | Pattern.MULTILINE);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private final List<SMS> items = Lists.newArrayList();
+    private String content;
+    private File file;
 
     @SneakyThrows
     static List<SMS> parse(String content, String hostName, String hostNumber)

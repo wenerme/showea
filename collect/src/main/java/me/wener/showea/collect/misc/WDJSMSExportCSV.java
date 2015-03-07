@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import lombok.SneakyThrows;
 import lombok.extern.java.Log;
-import me.wener.showea.collect.i518.SMS;
+import me.wener.showea.model.SMS;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;

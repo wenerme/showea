@@ -1,8 +1,8 @@
 package me.wener.showea.collect;
 
 import java.io.PrintStream;
-import me.wener.showea.collect.qq.ChatMessage;
-import me.wener.showea.collect.qq.ZoneMessage;
+import me.wener.showea.model.ChatMessage;
+import me.wener.showea.model.ZoneMessage;
 
 public class NicePrint
 {
