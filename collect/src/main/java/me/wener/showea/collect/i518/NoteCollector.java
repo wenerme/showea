@@ -1,11 +1,11 @@
 package me.wener.showea.collect.i518;
 
 import com.google.common.collect.Lists;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import lombok.SneakyThrows;
+import me.wener.showea.collect.util.Text;
 import me.wener.showea.model.Note;
 
 public class NoteCollector
@@ -16,7 +16,6 @@ public class NoteCollector
                     "(?<date>[0-9-]+)\n" +
                     "\\((?<week>[^)]+)\\)\n" +
                     "(?<time>[0-9:]+)\\s*(?<weather>[^\\r\\n]+)[\\r\\n]+", Pattern.MULTILINE | Pattern.COMMENTS);
-    private static final SimpleDateFormat DATA_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @SneakyThrows
     static List<Note> parse(String content)
@@ -28,7 +27,7 @@ public class NoteCollector
             Note note = new Note()
                     .title(matcher.group("title"))
                     .weather(matcher.group("weather"))
-                    .data(DATA_FORMAT.parse(matcher.group("date") + " " + matcher.group("time")));
+                    .date(Text.date(matcher.group("date") + " " + matcher.group("time")));
             items.add(note);
         }
 

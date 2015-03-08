@@ -29,7 +29,7 @@ public class NicePrint
         for (ChatMessage message : messages)
         {
             out.printf("%s->%s@(%3$tY-%3$tm-%3$td %3$tk:%3$tM:%3$tS): \n\t%4$s\n",
-                    message.from(), message.to(), message.data(), message.content());
+                    message.from(), message.to(), message.date(), message.content());
         }
     }
 }

@@ -1,7 +1,6 @@
 package me.wener.showea.collect.i518;
 
 import com.google.common.collect.Lists;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
+import me.wener.showea.collect.util.Text;
 import me.wener.showea.model.SMS;
 
 @Getter
@@ -22,7 +22,6 @@ public class SMSCollector
             "(?<type>收件人|发件人|To|From)[：:]\n" +
             "(?<target>[^\\r\\n]*)[\\r\\n]+\n" +
             "(?<date>[^\\s]+)\\s+(?<time>[^\\r\\n]*)[\\r\\n]", Pattern.COMMENTS | Pattern.MULTILINE);
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     @Getter(AccessLevel.NONE)
     private final List<SMS> items = Lists.newArrayList();
     private String content;
@@ -66,6 +65,8 @@ public class SMSCollector
                     throw new RuntimeException("解析错误: " + matcher.group());
             }
 
+            String date = matcher.group("date") + " " + matcher.group("time")
+                                                               .replace('：', ':');
             if (to != null && to.contains("、"))
             {
                 String[] split = to.split("、");
@@ -75,16 +76,14 @@ public class SMSCollector
 
                     SMS sms = new SMS().from(from).fromNumber(fromNumber)
                                        .to(to).toNumber(toNumber)
-                                       .data(DATE_FORMAT.parse(matcher.group("date") + " " + matcher.group("time")
-                                                                                                    .replace('：', ':')));
+                                       .data(Text.date(date));
                     items.add(sms);
                 }
             } else
             {
                 SMS sms = new SMS().from(from).fromNumber(fromNumber)
                                    .to(to).toNumber(toNumber)
-                                   .data(DATE_FORMAT.parse(matcher.group("date") + " " + matcher.group("time")
-                                                                                                .replace('：', ':')));
+                                   .data(Text.date(date));
                 items.add(sms);
             }
 

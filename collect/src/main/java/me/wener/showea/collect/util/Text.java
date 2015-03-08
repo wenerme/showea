@@ -1,11 +1,14 @@
 package me.wener.showea.collect.util;
 
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.joda.time.format.DateTimeFormat;
@@ -87,15 +90,43 @@ public class Text
         DateTimeParser[] parsers = {
                 DateTimeFormat.forPattern("yyyy/MM/dd").getParser()
                 , DateTimeFormat.forPattern("yyyy/MM/dd HH:mm:ss").getParser()
+                , DateTimeFormat.forPattern("yyyy/MM/dd HH:mm").getParser()
                 , DateTimeFormat.forPattern("yyyy-MM-dd").getParser()
                 , DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").getParser()
+                , DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").getParser()
                 , DateTimeFormat.forPattern("HH:mm:ss").getParser()
         };
         return new DateTimeFormatterBuilder().append(null, parsers).toFormatter();
     }
 
+    public static String escapeHTML(String text)
+    {
+        Escaper escaper = HtmlEscapers.htmlEscaper();
+        return escaper.escape(text);
+//        StringBuilder builder = new StringBuilder(text.length() * 2);
+//        for (int i = 0; i < text.length(); i++)
+//        {
+//            char c = text.charAt(i);
+//            switch (c)
+//            {
+//                case '&': builder.append("&amp;"); break;
+//                case '>': builder.append("&gt;"); break;
+//                case '<': builder.append("&lt;"); break;
+//                case '"': builder.append("&quot;"); break;
+//                case '\'': builder.append("&#39;"); break;
+//                default: builder.append(c); break;
+//            }
+//        }
+//        return builder;
+    }
+
     public static DateTimeFormatter formatter()
     {
         return FORMATTER;
+    }
+
+    public static Date date(String s)
+    {
+        return FORMATTER.parseLocalDateTime(s).toDate();
     }
 }

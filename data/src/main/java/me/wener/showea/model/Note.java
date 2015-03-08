@@ -23,7 +23,7 @@ public class Note implements Serializable
     @GeneratedValue
     private Long id;
 
-    private Date data;
+    private Date date;
     @Column(length = 2000)
     private String content;
     private String title;
