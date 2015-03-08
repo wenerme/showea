@@ -27,9 +27,9 @@ public class SMS implements Serializable
     private Date data;
     @Column(length = 1000)
     private String content;
-    @Column(name = "`from`", length = 20)
+    @Column(name = "fromName", length = 20)
     private String from;
-    @Column(name = "`to`", length = 20)
+    @Column(name = "toName", length = 20)
     private String to;
     @Column(length = 20)
     private String fromNumber;

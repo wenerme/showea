@@ -3,7 +3,7 @@ package me.wener.showea.collect.misc;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
-import me.wener.showea.collect.util.Encoding;
+import me.wener.showea.collect.util.Text;
 import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.Test;
 
@@ -13,8 +13,8 @@ public class WDJSMSSCSVTest
     public void test() throws IOException
     {
         InputStream is = ClassLoader.getSystemResourceAsStream("misc/wdj-sms.csv");
-        String content = Encoding.toUTF8AndClose(is);
-        System.out.println(WDJSMSExportCSV.parse(content, "你你", null));
+        String content = Text.readAndClose(is);
+        System.out.println(WDJSMSCollector.csv(content, "你你", null));
     }
 
     @Test

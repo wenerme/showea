@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import me.wener.showea.collect.util.Encoding;
+import me.wener.showea.collect.util.Text;
 import org.junit.Test;
 
 public class RegexTest
@@ -14,7 +14,7 @@ public class RegexTest
     public void parseNote() throws IOException
     {
         InputStream is = ClassLoader.getSystemResourceAsStream("i518/note.txt");
-        String content = Encoding.toUTF8AndClose(is);
+        String content = Text.readAndClose(is);
         System.out.println(NoteCollector.parse(content));
     }
 
@@ -31,7 +31,7 @@ public class RegexTest
     public void parseSMS() throws IOException
     {
         InputStream is = ClassLoader.getSystemResourceAsStream("i518/sms.txt");
-        String content = Encoding.toUTF8AndClose(is);
+        String content = Text.readAndClose(is);
         System.out.println(SMSCollector.parse(content, "你你", null));
     }
 

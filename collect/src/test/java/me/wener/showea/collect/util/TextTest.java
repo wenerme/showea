@@ -7,7 +7,7 @@ import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-public class EncodingTest
+public class TextTest
 {
 
     @Test
@@ -15,8 +15,8 @@ public class EncodingTest
     {
         InputStream is = ClassLoader.getSystemResourceAsStream("enc-gbk.txt");
         byte[] bytes = IOUtils.toByteArray(is);
-        System.out.println(Encoding.toUTF8(bytes));
-        assertEquals("GB18030", Encoding.detect(bytes));
+        System.out.println(Text.toUTF8(bytes));
+        assertEquals("GB18030", Text.encoding(bytes));
     }
 
 }

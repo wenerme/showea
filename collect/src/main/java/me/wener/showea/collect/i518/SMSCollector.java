@@ -1,18 +1,19 @@
 package me.wener.showea.collect.i518;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
 import me.wener.showea.model.SMS;
 
 @Getter
+@Setter
 @Accessors(fluent = true, chain = true)
 public class SMSCollector
 {
@@ -22,9 +23,10 @@ public class SMSCollector
             "(?<target>[^\\r\\n]*)[\\r\\n]+\n" +
             "(?<date>[^\\s]+)\\s+(?<time>[^\\r\\n]*)[\\r\\n]", Pattern.COMMENTS | Pattern.MULTILINE);
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    @Getter(AccessLevel.NONE)
     private final List<SMS> items = Lists.newArrayList();
     private String content;
-    private File file;
+    private String host, hostNumber;
 
     @SneakyThrows
     static List<SMS> parse(String content, String hostName, String hostNumber)
@@ -64,10 +66,28 @@ public class SMSCollector
                     throw new RuntimeException("解析错误: " + matcher.group());
             }
 
-            SMS sms = new SMS().from(from).fromNumber(fromNumber)
-                               .to(to).toNumber(toNumber)
-                               .data(DATE_FORMAT.parse(matcher.group("date") + " " + matcher.group("time")));
-            items.add(sms);
+            if (to != null && to.contains("、"))
+            {
+                String[] split = to.split("、");
+                for (String s : split)
+                {
+                    to = s;
+
+                    SMS sms = new SMS().from(from).fromNumber(fromNumber)
+                                       .to(to).toNumber(toNumber)
+                                       .data(DATE_FORMAT.parse(matcher.group("date") + " " + matcher.group("time")
+                                                                                                    .replace('：', ':')));
+                    items.add(sms);
+                }
+            } else
+            {
+                SMS sms = new SMS().from(from).fromNumber(fromNumber)
+                                   .to(to).toNumber(toNumber)
+                                   .data(DATE_FORMAT.parse(matcher.group("date") + " " + matcher.group("time")
+                                                                                                .replace('：', ':')));
+                items.add(sms);
+            }
+
         }
 
 
@@ -82,7 +102,15 @@ public class SMSCollector
 
     private static boolean isNumber(String str)
     {
-        return str.matches("^+?[-\\d]+$");
+        return str.matches("^\\+?[-\\d]+$");
+    }
+
+    public static void main(String[] args)
+    {
+        if (isNumber("+8613550814520"))
+        {
+            System.out.println("Match");
+        }
     }
 
     public void reset()
@@ -93,10 +121,11 @@ public class SMSCollector
 
     public void parse()
     {
+        items.addAll(parse(content, host, hostNumber));
     }
 
     public List<SMS> collect()
     {
-        return ImmutableList.copyOf(items);
+        return items;
     }
 }

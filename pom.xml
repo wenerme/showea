@@ -13,7 +13,7 @@
         <module>ea</module>
         <module>show</module>
         <module>images</module>
-        <module>model</module>
+        <module>data</module>
     </modules>
 
     <properties>

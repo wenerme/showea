@@ -16,12 +16,12 @@ import org.apache.commons.csv.CSVRecord;
  * 豌豆荚导出的 SMS CSV
  */
 @Log
-public class WDJSMSExportCSV
+public class WDJSMSCollector
 {
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
     @SneakyThrows
-    public static List<SMS> parse(String content, String hostName, String hostNumber) throws IOException
+    public static List<SMS> csv(String content, String hostName, String hostNumber) throws IOException
     {
         List<SMS> items = Lists.newArrayList();
 
@@ -48,20 +48,26 @@ deliver 为接收
                 log.log(Level.WARNING, "Unexpected msgType " + record);
                 continue;
             }
+            String from, to, fromNumber, toNumber, target, targetNumber;
+            target = record.get("target").trim();
+            targetNumber = record.get("targetNumber").trim(); ;
 
             switch (record.get("opType"))
             {
                 case "submit":
                     break;
                 case "deliver":
+                {
+                    // 如果是接收,则这个位置需要对换
+                    String t = target;
+                    target = targetNumber;
+                    targetNumber = t;
+                }
                     break;
                 default:
                     throw new RuntimeException("Unexpected opType " + record);
             }
 
-            String from, to, fromNumber, toNumber, target, targetNumber;
-            target = record.get("target").trim();
-            targetNumber = record.get("targetNumber").trim(); ;
 
             switch (record.get("opType"))
             {
