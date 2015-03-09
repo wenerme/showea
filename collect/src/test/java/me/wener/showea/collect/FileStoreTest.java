@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.util.List;
 import me.wener.showea.ShowApplication;
 import me.wener.showea.collect.qq.MHTMessageCollector;
-import me.wener.showea.model.FileMeta;
-import me.wener.showea.model.FileMetaRepository;
-import me.wener.showea.model.FileStore;
+import me.wener.showea.model.file.FileReference;
+import me.wener.showea.model.file.FileReferenceRepository;
+import me.wener.showea.model.file.FileStore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +24,15 @@ public class FileStoreTest
     @Autowired
     FileStore fileStore;
     @Autowired
-    FileMetaRepository fileMetaRepo;
+    FileReferenceRepository fileMetaRepo;
 
     @Test
     public void test() throws IOException
     {
         MHTMessageCollector.Contents contents = MHTMessageCollector
                 .contents(new File("/Users/wener/gits/note/ignored/us/mht/笑笑(760355495).mht"));
-        List<FileMeta> metas = fileStore.store(contents.attachments().values());
-        for (FileMeta meta : metas)
+        List<FileReference> metas = fileStore.store(contents.attachments().values());
+        for (FileReference meta : metas)
         {
             System.out.println(meta);
         }
