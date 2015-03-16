@@ -7,6 +7,7 @@ import com.google.common.hash.Hashing;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.List;
 import javax.validation.constraints.NotNull;
@@ -30,8 +31,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class FileStore
 {
-    protected final static HashFunction sha1 = Hashing.sha1();
-    protected final static HashFunction md5 = Hashing.md5();
+    protected final static HashFunction SHA1 = Hashing.sha1();
+    protected final static HashFunction MD5 = Hashing.md5();
     protected final MimeTypes mimeTypes;
     @Autowired
     protected FileReferenceRepository fileRefRepo;
@@ -70,14 +71,13 @@ public class FileStore
         return Files.readAllBytes(file(meta).toPath());
     }
 
-    public FileReference store(FileReference meta, byte[] data) throws IOException
+    public FileReference store(FileReference ref, byte[] data) throws IOException
     {
-        File file = file(meta);
-        if (!file.exists())
-        {
-            FileUtils.writeByteArrayToFile(file, data);
-        }
-        return meta;
+        FileMeta meta = createMeta(data);
+        store(meta, data);
+        ref.meta(meta);
+        fileRefRepo.save(ref);
+        return ref;
     }
 
     public FileMeta store(FileMeta meta, byte[] data) throws IOException
@@ -91,15 +91,20 @@ public class FileStore
         return meta;
     }
 
+    public FileMeta store(FileMeta meta, InputStream is) throws IOException
+    {
+        File file = file(meta);
+        if (!file.exists())
+        {
+            Files.copy(is, file.toPath());
+        }
+        fileMetaRepo.save(meta);
+        return meta;
+    }
+
     public String filename(@NotNull FileReference reference) throws IOException
     {
-        try
-        {
-            return reference.sha1() + "." + mimeTypes.forName(reference.type()).getExtension();
-        } catch (MimeTypeException e)
-        {
-            throw new IOException(e);
-        }
+        return filename(reference.meta());
     }
 
     public String filename(@NotNull FileMeta meta) throws IOException
@@ -124,16 +129,51 @@ public class FileStore
     }
 
 
+    public FileMeta createMeta(byte[] content) throws IOException
+    {
+        Preconditions.checkNotNull(content);
+        Preconditions.checkArgument(content.length > 0);
+        FileMeta meta;
+
+        String sha1 = SHA1.hashBytes(content).toString();
+        meta = fileMetaRepo.findOne(sha1);
+        if (meta == null)
+        {
+            meta = new FileMeta();
+
+            Metadata metadata = new Metadata();
+//            metadata.set(Metadata.RESOURCE_NAME_KEY, attachment.name());
+            MediaType mediaType = mimeTypes.detect(new ByteArrayInputStream(content), metadata);
+            meta.type(mediaType.toString())
+                .md5(MD5.hashBytes(content).toString())
+                .sha1(sha1)
+                .length(content.length);
+        }
+        return meta;
+    }
+
     public FileReference createReference(Attachment attachment) throws IOException
+    {
+        FileMeta meta = createMeta(attachment);
+        FileReference ref = fileRefRepo.findByFilenameAndSha1(attachment.name(), meta.sha1());
+        if (ref == null)
+        {
+            ref = new FileReference();
+            ref.meta(meta)
+               .filename(attachment.name());
+        }
+        return ref;
+    }
+
+    public FileMeta createMeta(Attachment attachment) throws IOException
     {
         Preconditions.checkNotNull(attachment.content());
         Preconditions.checkArgument(attachment.content().length > 0);
 
-        FileReference ref = new FileReference();
         FileMeta meta;
         if (attachment.sha1() == null)
         {
-            attachment.sha1(sha1.hashBytes(attachment.content()).toString());
+            attachment.sha1(SHA1.hashBytes(attachment.content()).toString());
         }
 
         meta = fileMetaRepo.findOne(attachment.sha1());
@@ -150,7 +190,7 @@ public class FileStore
 
             if (attachment.md5() == null)
             {
-                attachment.md5(md5.hashBytes(attachment.content()).toString());
+                attachment.md5(MD5.hashBytes(attachment.content()).toString());
             }
 
 
@@ -167,10 +207,7 @@ public class FileStore
                 attachment.type(meta.type());
         }
 
-        ref.meta(meta)
-           .filename(attachment.name());
-
-        return ref;
+        return meta;
     }
 
     public FileReference store(Attachment attachment) throws IOException

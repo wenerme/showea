@@ -51,7 +51,6 @@ public class FileReference
     @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
     @JoinColumn(name = "sha1",
             referencedColumnName = "sha1",
-            updatable = false,
             nullable = false)
     private FileMeta meta;
 
