@@ -17,8 +17,12 @@ public class NoteCollector
                     "\\((?<week>[^)]+)\\)\n" +
                     "(?<time>[0-9:]+)\\s*(?<weather>[^\\r\\n]+)[\\r\\n]+", Pattern.MULTILINE | Pattern.COMMENTS);
 
+    private NoteCollector()
+    {
+    }
+
     @SneakyThrows
-    static List<Note> parse(String content)
+    public static List<Note> parse(String content)
     {
         Matcher matcher = REGEX.matcher(content);
         List<Note> items = Lists.newArrayList();

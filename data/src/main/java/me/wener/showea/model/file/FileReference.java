@@ -1,7 +1,6 @@
 package me.wener.showea.model.file;
 
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +21,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true, fluent = true)
 @Entity
-@Table(name = "T_FILE_REF",
-        indexes = {@Index(columnList = "filename"), @Index(columnList = "owner")}
+@Table(name = "T_FILE_REF", indexes = {@Index(columnList = "filename")}
 )
 public class FileReference
 {
@@ -33,6 +31,8 @@ public class FileReference
 
     private String filename;
     private String owner;
+    private String description;
+    private Date date = new Date();
 
     /**
      * The sha1 reference may change
@@ -41,14 +41,10 @@ public class FileReference
      */
     @Setter(AccessLevel.NONE)
     @Getter(AccessLevel.NONE)
+    @Column(insertable = false, updatable = false)
     private String sha1;
-    @Column(columnDefinition = "default now()")
-    private Date lastModificationDate;
-    @Column(columnDefinition = "default now()")
-    private Date uploadDate;
 
-
-    @ManyToOne(cascade = CascadeType.PERSIST, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "sha1",
             referencedColumnName = "sha1",
             nullable = false)

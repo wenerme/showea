@@ -6,6 +6,7 @@ import com.google.common.hash.HashFunction;
 import com.google.common.hash.Hashing;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -46,16 +47,6 @@ public class FileStore
         mimeTypes = MimeTypes.getDefaultMimeTypes();
     }
 
-    public boolean exists(FileReference reference) throws IOException
-    {
-        return file(reference).exists();
-    }
-
-    public File file(FileReference reference) throws IOException
-    {
-        return file(filename(reference));
-    }
-
     public File file(FileMeta meta) throws IOException
     {
         return file(filename(meta));
@@ -64,20 +55,6 @@ public class FileStore
     public File file(String filename) throws IOException
     {
         return settings.fileStorePath().resolve(filename).toFile();
-    }
-
-    public byte[] readAllBytes(FileMeta meta) throws IOException
-    {
-        return Files.readAllBytes(file(meta).toPath());
-    }
-
-    public FileReference store(FileReference ref, byte[] data) throws IOException
-    {
-        FileMeta meta = createMeta(data);
-        store(meta, data);
-        ref.meta(meta);
-        fileRefRepo.save(ref);
-        return ref;
     }
 
     public FileMeta store(FileMeta meta, byte[] data) throws IOException
@@ -91,6 +68,18 @@ public class FileStore
         return meta;
     }
 
+
+    public String filename(@NotNull FileMeta meta) throws IOException
+    {
+        try
+        {
+            return meta.sha1() + mimeTypes.forName(meta.type()).getExtension();
+        } catch (MimeTypeException e)
+        {
+            throw new IOException(e);
+        }
+    }
+
     public FileMeta store(FileMeta meta, InputStream is) throws IOException
     {
         File file = file(meta);
@@ -102,32 +91,23 @@ public class FileStore
         return meta;
     }
 
-    public String filename(@NotNull FileReference reference) throws IOException
-    {
-        return filename(reference.meta());
-    }
-
-    public String filename(@NotNull FileMeta meta) throws IOException
-    {
-        try
-        {
-            return meta.sha1() + "." + mimeTypes.forName(meta.type()).getExtension();
-        } catch (MimeTypeException e)
-        {
-            throw new IOException(e);
-        }
-    }
-
     public List<FileReference> store(Iterable<Attachment> attachments) throws IOException
     {
-        List<FileReference> metas = Lists.newArrayList();
+        List<FileReference> items = Lists.newArrayList();
         for (Attachment attachment : attachments)
         {
-            metas.add(store(attachment));
+            items.add(store(attachment));
         }
-        return metas;
+        return items;
     }
 
+    public FileReference store(Attachment attachment) throws IOException
+    {
+        FileReference ref = createReference(attachment);
+        store(ref.meta(), attachment.content());
+        fileRefRepo.save(ref);
+        return ref;
+    }
 
     public FileMeta createMeta(byte[] content) throws IOException
     {
@@ -210,8 +190,14 @@ public class FileStore
         return meta;
     }
 
-    public FileReference store(Attachment attachment) throws IOException
+
+    public byte[] readAllBytes(FileMeta meta) throws IOException
     {
-        return store(createReference(attachment), attachment.content());
+        return Files.readAllBytes(file(meta).toPath());
+    }
+
+    public InputStream read(FileMeta meta) throws IOException
+    {
+        return new FileInputStream(file(meta));
     }
 }
