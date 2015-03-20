@@ -1,0 +1,27 @@
+{
+  "name": "showea",
+  "version": "0.0.1",
+  "homepage": "https://github.com/wenerme/showea",
+  "authors": [
+    "wener <wenermail@gmail.com>"
+  ],
+  "description": "Show en ai",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "js/libs",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "jquery": "~2.1.3",
+    "fontawesome": "~4.3.0",
+    "moment": "~2.9.0",
+    "less.js": "~2.4.0",
+    "requirejs": "~2.1.16"
+  }
+}

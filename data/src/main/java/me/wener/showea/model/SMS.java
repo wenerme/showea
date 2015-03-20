@@ -24,7 +24,7 @@ public class SMS implements Serializable
     @GeneratedValue
     private Long id;
 
-    private Date data;
+    private Date date;
     @Column(length = 1000)
     private String content;
     @Column(name = "fromName", length = 20)

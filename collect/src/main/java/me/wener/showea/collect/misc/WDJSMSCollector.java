@@ -95,7 +95,7 @@ deliver 为接收
 
             SMS sms = new SMS().from(from).fromNumber(fromNumber)
                                .to(to).toNumber(toNumber)
-                               .data(DATE_FORMAT.parse(date))
+                               .date(DATE_FORMAT.parse(date))
                                .content(record.get("content"));
             items.add(sms);
         }

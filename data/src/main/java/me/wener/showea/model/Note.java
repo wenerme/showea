@@ -2,6 +2,8 @@ package me.wener.showea.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true, fluent = true)
 @Entity
 @Table(name = "T_NOTE")
+@Access(AccessType.FIELD)
 public class Note implements Serializable
 {
     @Id
@@ -28,4 +31,6 @@ public class Note implements Serializable
     private String content;
     private String title;
     private String weather;
+
+
 }

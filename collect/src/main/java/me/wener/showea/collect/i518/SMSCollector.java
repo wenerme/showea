@@ -76,14 +76,14 @@ public class SMSCollector
 
                     SMS sms = new SMS().from(from).fromNumber(fromNumber)
                                        .to(to).toNumber(toNumber)
-                                       .data(Text.date(date));
+                                       .date(Text.date(date));
                     items.add(sms);
                 }
             } else
             {
                 SMS sms = new SMS().from(from).fromNumber(fromNumber)
                                    .to(to).toNumber(toNumber)
-                                   .data(Text.date(date));
+                                   .date(Text.date(date));
                 items.add(sms);
             }
 
