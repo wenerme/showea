@@ -5,6 +5,10 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.net.URI;
 import java.net.URISyntaxException;
+import me.wener.showea.model.ChatMessage;
+import me.wener.showea.model.Note;
+import me.wener.showea.model.SMS;
+import me.wener.showea.model.ZoneMessage;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -26,6 +30,8 @@ public class ShoweaRestMvcConfiguration extends RepositoryRestMvcConfiguration
     protected void configureRepositoryRestConfiguration(RepositoryRestConfiguration config)
     {
         super.configureRepositoryRestConfiguration(config);
+        config.exposeIdsFor(SMS.class, Note.class, ChatMessage.class, ZoneMessage.class);
+
         try
         {
             config.setBaseUri(new URI("/v"));

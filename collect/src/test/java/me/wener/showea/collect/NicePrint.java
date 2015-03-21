@@ -1,7 +1,9 @@
 package me.wener.showea.collect;
 
 import java.io.PrintStream;
+import java.util.List;
 import me.wener.showea.model.ChatMessage;
+import me.wener.showea.model.SMS;
 import me.wener.showea.model.ZoneMessage;
 
 public class NicePrint
@@ -30,6 +32,19 @@ public class NicePrint
         {
             out.printf("%s->%s@(%3$tY-%3$tm-%3$td %3$tk:%3$tM:%3$tS): \n\t%4$s\n",
                     message.from(), message.to(), message.date(), message.content());
+        }
+    }
+
+    public static void sms(List<SMS> items)
+    {
+        PrintStream out = System.out;
+
+        for (SMS message : items)
+        {
+            out.printf("%s(%s)->%s(%s)@(%5$tY-%5$tm-%5$td %5$tk:%5$tM:%5$tS): \n\t%6$s\n",
+                    message.from(), message.fromNumber(),
+                    message.toNumber(), message.to(),
+                    message.date(), message.content());
         }
     }
 }

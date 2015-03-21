@@ -30,8 +30,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <optional>true</optional>
-            <scope>compile</scope>
+            <!--<optional>true</optional>-->
+            <!--<scope>compile</scope>-->
         </dependency>
 
         <dependency>

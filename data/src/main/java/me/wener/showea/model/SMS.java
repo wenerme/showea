@@ -35,4 +35,17 @@ public class SMS implements Serializable
     private String fromNumber;
     @Column(length = 20)
     private String toNumber;
+
+    public SMS() {}
+
+    public SMS(SMS other)
+    {
+        id = other.id;
+        content = other.content;
+        from = other.from;
+        to = other.to;
+        fromNumber = other.fromNumber;
+        toNumber = other.toNumber;
+        date = other.date;
+    }
 }

@@ -5,7 +5,10 @@ import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import me.wener.showea.collect.NicePrint;
 import me.wener.showea.collect.util.Text;
+import me.wener.showea.model.SMS;
 import org.junit.Test;
 
 public class RegexTest
@@ -32,7 +35,8 @@ public class RegexTest
     {
         InputStream is = ClassLoader.getSystemResourceAsStream("i518/sms.txt");
         String content = Text.readAndClose(is);
-        System.out.println(SMSCollector.parse(content, "你你", null));
+        List<SMS> smses = SMSCollector.parse(content, "你你", null);
+        NicePrint.sms(smses);
     }
 
 }
